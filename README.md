@@ -130,6 +130,22 @@ Copy [.env.example](.env.example) to `.env.local` and replace the placeholders.
 
 Keep `DATABASE_URL`, `BETTER_AUTH_SECRET`, and Cloudflare credentials server-side. Only variables intentionally prefixed with `NEXT_PUBLIC_` can be exposed to browser code.
 
+### Neon project wiring
+
+The repository is configured for the linked Neon project and `production` branch. The local `.neon` link file and `.env.local` values are ignored by Git; only the declarative [`neon.ts`](neon.ts) policy belongs in the repository.
+
+For a fresh checkout:
+
+```bash
+npm i -g neon@latest
+neon login
+neon link --project-id lingering-shadow-40891188 --branch production -y
+neon config plan
+neon deploy
+```
+
+The current policy declares Postgres only with `defineConfig({})`. This preserves QueueLess's existing self-managed Better Auth design and does not provision Neon Auth, Data API, Functions, Object Storage, or AI Gateway.
+
 ## 🩺 Health check
 
 The minimal health endpoint is available at [`/api/health`](http://localhost:3000/api/health):
@@ -198,6 +214,8 @@ QueueLess uses the OpenNext Cloudflare adapter with these important settings in 
    ```
 
 R2-backed incremental caching is not configured yet. It can be added once a production R2 bucket and cache policy are defined.
+
+The project-level Neon MCP configuration is stored in `.codex/config.toml` using the OAuth server URL only. No Neon API key is committed to the repository. Project agent skills are pinned in `skills-lock.json` and stored under `.agents/skills/`.
 
 ## 🛡️ Engineering guardrails
 
