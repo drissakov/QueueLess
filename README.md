@@ -1,12 +1,14 @@
 # QueueLess
 
+🌐 **Live application:** [queueless.queueless.workers.dev](https://queueless.queueless.workers.dev) · [Health check](https://queueless.queueless.workers.dev/api/health)
+
 <p align="center">
   <strong>Appointments without the wait.</strong><br />
   A calm, focused booking foundation for small businesses.
 </p>
 
 <p align="center">
-  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-16.4.0-111827?logo=next.js&logoColor=white" alt="Next.js 16.4.0" /></a>
+  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-16.3.8-111827?logo=next.js&logoColor=white" alt="Next.js 16.3.8" /></a>
   <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
   <a href="https://workers.cloudflare.com/"><img src="https://img.shields.io/badge/Cloudflare_Workers-Ready-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare Workers ready" /></a>
   <a href="https://orm.drizzle.team/"><img src="https://img.shields.io/badge/Drizzle_ORM-Configured-C5F74F?logo=drizzle&logoColor=111827" alt="Drizzle ORM" /></a>
@@ -182,6 +184,10 @@ Stage 1 intentionally has zero application tables, so `npm run db:generate` curr
 
 QueueLess uses the OpenNext Cloudflare adapter with these important settings in [`wrangler.jsonc`](wrangler.jsonc):
 
+- Worker name: `queueless`, published at `https://queueless.queueless.workers.dev`.
+- Account ID is configured for this project's Cloudflare account.
+- `workers_dev: true` enables the public address; `keep_vars: true` preserves existing dashboard variables.
+- Production application and auth URLs are configured as non-secret variables.
 - `main`: `.open-next/worker.js`
 - static assets: `.open-next/assets`
 - `nodejs_compat` for the OpenNext runtime
@@ -214,6 +220,10 @@ QueueLess uses the OpenNext Cloudflare adapter with these important settings in 
    ```
 
 R2-backed incremental caching is not configured yet. It can be added once a production R2 bucket and cache policy are defined.
+
+Next.js and `eslint-config-next` are pinned to 16.3.8 for compatibility with OpenNext Cloudflare 1.20.9. Next.js 16.4 introduces `preview-props.json`, which this adapter release does not yet inline and causes a Worker startup exception. Validate framework upgrades with `npm run preview` as well as production builds.
+
+The deployed Worker stores the existing Neon `DATABASE_URL` as an encrypted Cloudflare secret. Application authentication remains deferred until the next development stage.
 
 The project-level Neon MCP configuration is stored in `.codex/config.toml` using the OAuth server URL only. No Neon API key is committed to the repository. Project agent skills are pinned in `skills-lock.json` and stored under `.agents/skills/`.
 

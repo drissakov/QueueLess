@@ -1,6 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "queueless",
+  "account_id": "2d82ad9740182557f45c234b7e3156eb",
+  "workers_dev": true,
+  "keep_vars": true,
+  "vars": {
+    "BETTER_AUTH_URL": "https://queueless.queueless.workers.dev",
+    "NEXT_PUBLIC_APP_URL": "https://queueless.queueless.workers.dev"
+  },
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-09",
   "compatibility_flags": [
